@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['VT323', 'monospace'],
-        headline: ['VT323', 'monospace'],
+        body: ['Silkscreen', 'sans-serif'],
+        headline: ['Silkscreen', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {

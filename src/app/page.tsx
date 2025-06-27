@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -66,18 +65,10 @@ export default function CombinedPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!showOracle) {
-      const intervalId = setInterval(() => {
-        setBubbleText(prevText => {
-          const currentIndex = messages.indexOf(prevText);
-          const nextIndex = (currentIndex + 1) % messages.length;
-          return messages[nextIndex];
-        });
-      }, 4000);
-
-      return () => clearInterval(intervalId);
-    }
-  }, [showOracle]);
+    // Set a random message once on component mount (client-side)
+    // to avoid a hydration mismatch.
+    setBubbleText(messages[Math.floor(Math.random() * messages.length)]);
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
