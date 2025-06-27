@@ -174,7 +174,7 @@ export default function CombinedPage() {
             <div className="absolute inset-0 bg-black/60" />
         </div>
         <main
-          className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8"
+          className="relative z-10 flex flex-col items-center justify-center h-screen p-4 sm:p-8"
         >
           {isImageLoading && (
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-30">
@@ -229,8 +229,8 @@ export default function CombinedPage() {
               <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
           )}
         </div>
-        <main className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8">
-          <div className="w-full max-w-2xl mx-auto">
+        <main className="relative z-10 flex flex-col items-center h-screen overflow-y-auto px-4 sm:px-8">
+          <div className="w-full max-w-2xl mx-auto py-12">
             <header className="flex flex-col items-center text-center mb-8">
               <OracleIcon className="mb-4" />
               <h1 className="text-3xl font-bold font-headline text-foreground">
