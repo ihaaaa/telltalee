@@ -83,16 +83,22 @@
   }
 
   .dark body {
-    background-image:
-        /* Nebulas */
-        radial-gradient(ellipse at 70% 20%, hsl(var(--primary) / 0.1), transparent 50%),
-        radial-gradient(ellipse at 30% 80%, hsl(var(--accent) / 0.1), transparent 50%),
-        /* Stars */
-        radial-gradient(1px 1px at 10% 30%, hsl(var(--foreground) / 0.8), transparent),
-        radial-gradient(1px 1px at 80% 40%, hsl(var(--foreground) / 0.8), transparent),
-        radial-gradient(1px 1px at 40% 80%, hsl(var(--foreground) / 0.8), transparent),
-        radial-gradient(2px 2px at 90% 70%, hsl(var(--foreground) / 0.9), transparent),
-        radial-gradient(2px 2px at 20% 10%, hsl(var(--foreground) / 0.9), transparent);
+    background-color: hsl(var(--background));
+    background-image: 
+        /* Faint purple nebula for "mystic" feel */
+        radial-gradient(ellipse at 70% 30%, hsl(var(--accent) / 0.1), transparent 60%),
+        radial-gradient(ellipse at 30% 80%, hsl(var(--primary) / 0.1), transparent 60%),
+
+        /* Pixel stars layers */
+        radial-gradient(1px 1px at 50% 50%, hsl(var(--foreground) / 0.9), transparent),
+        radial-gradient(1px 1px at 50% 50%, hsl(var(--foreground) / 0.6), transparent),
+        radial-gradient(2px 2px at 50% 50%, hsl(var(--foreground) / 0.9), transparent);
+    
+    background-repeat: no-repeat, no-repeat, repeat, repeat, repeat;
+    
+    background-size: 100% 100%, 100% 100%, 80px 80px, 120px 120px, 200px 200px;
+    background-position: 0% 0%, 0% 0%, 10px 10px, 55px 55px, 150px 150px;
+
     background-attachment: fixed;
   }
 }

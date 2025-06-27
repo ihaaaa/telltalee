@@ -112,16 +112,7 @@ export default function CombinedPage() {
             showOracle ? "opacity-0 pointer-events-none" : "opacity-100"
           )}
         >
-          <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 bg-black relative overflow-hidden">
-            <div className="absolute inset-0 z-0">
-              <img 
-                src="https://placehold.co/1920x1080.png" 
-                data-ai-hint="starry night" 
-                alt="Starry night sky" 
-                className="object-cover w-full h-full opacity-20" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
-            </div>
-
+          <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 relative overflow-hidden">
             <div className="relative z-10 flex flex-col items-center text-center text-white">
               <div className="relative w-64 h-64 mb-4 group">
                 <CaveEntranceIcon className="absolute inset-0 w-full h-full text-foreground/5" />
