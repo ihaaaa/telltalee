@@ -32,7 +32,6 @@ import {
 } from "@/components/ui/dialog";
 import { getAnalysis } from "../actions";
 import type { AnalyzeUserInputOutput } from "@/ai/flows/analyze-user-input";
-import { OracleIcon } from "@/components/oracle-icon";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { BookOpen, HeartPulse, Loader2, MessageSquareQuote, Terminal } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -101,8 +100,7 @@ export default function OraclePage() {
     <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 transition-colors duration-500">
       <div className="w-full max-w-2xl mx-auto">
         <header className="flex flex-col items-center text-center mb-8">
-          <OracleIcon className="mb-4" />
-          <h1 className="text-4xl font-bold font-headline text-foreground">
+          <h1 className="text-4xl font-bold font-headline text-foreground mt-8">
             TELL-TALE
           </h1>
           <p className="text-muted-foreground mt-2">

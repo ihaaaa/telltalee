@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { Button } from '@/components/ui/button';
-import { OracleIcon } from '@/components/oracle-icon';
 import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
@@ -183,13 +182,10 @@ export default function CombinedPage() {
             </div>
           )}
           <div className="relative z-10 flex flex-col items-center text-center text-white">
-            <div className="relative w-64 h-64 mb-4 group">
-               <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-56 z-20 animate-in fade-in delay-500 duration-1000">
-                  <PixelTextBubble>{bubbleText}</PixelTextBubble>
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
-                <OracleIcon className="w-24 h-24" />
-              </div>
+            <div className="mb-8 animate-in fade-in delay-500 duration-1000">
+                <div className="w-56">
+                    <PixelTextBubble>{bubbleText}</PixelTextBubble>
+                </div>
             </div>
 
             <h1 className="text-4xl font-bold font-headline text-white drop-shadow-lg">
@@ -232,8 +228,7 @@ export default function CombinedPage() {
         <main className="relative z-10 flex flex-col items-center h-screen overflow-y-auto px-4 sm:px-8">
           <div className="w-full max-w-2xl mx-auto py-12">
             <header className="flex flex-col items-center text-center mb-8">
-              <OracleIcon className="mb-4" />
-              <h1 className="text-3xl font-bold font-headline text-foreground">
+              <h1 className="text-3xl font-bold font-headline text-foreground mt-8">
                 TELL-TALE
               </h1>
               <p className="text-lg text-muted-foreground mt-2">
