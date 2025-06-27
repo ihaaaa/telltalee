@@ -22,6 +22,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { getAnalysis } from "../actions";
 import type { AnalyzeUserInputOutput } from "@/ai/flows/analyze-user-input";
 import { OracleIcon } from "@/components/oracle-icon";
@@ -31,13 +39,14 @@ import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   userInput: z.string()
-    .min(10, { message: "Please share a little more about what's on your mind." })
+    .min(1, { message: "Please share a little something." })
     .max(1000, { message: "The oracle can only process so much at once. Please keep it under 1000 characters." }),
 });
 
 export default function OraclePage() {
   const [analysis, setAnalysis] = useState<AnalyzeUserInputOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [userMessages, setUserMessages] = useState<string[]>([]);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,10 +58,13 @@ export default function OraclePage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    setAnalysis(null);
+
+    const newMessages = [...userMessages, values.userInput];
+    setUserMessages(newMessages);
+    const combinedInput = newMessages.join('\n\n');
 
     try {
-      const result = await getAnalysis(values);
+      const result = await getAnalysis({ userInput: combinedInput });
       if (result.error) {
         toast({
           variant: "destructive",
@@ -60,8 +72,14 @@ export default function OraclePage() {
           description: result.error,
         });
         setAnalysis(null);
+        setUserMessages([]); // Reset on error
       } else {
-        setAnalysis(result.data || null);
+        const newAnalysis = result.data || null;
+        setAnalysis(newAnalysis);
+        if (newAnalysis?.sentimentAnalysis !== 'Awaiting more details') {
+          // Full analysis received, clear for next time.
+          setUserMessages([]);
+        }
       }
     } catch (e) {
       toast({
@@ -70,10 +88,14 @@ export default function OraclePage() {
         description: "Something went wrong on our end. Please try again.",
       });
       setAnalysis(null);
+      setUserMessages([]); // Reset on error
     } finally {
       setIsLoading(false);
+      form.reset();
     }
   }
+
+  const isAwaitingMoreDetails = analysis?.sentimentAnalysis === 'Awaiting more details';
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 transition-colors duration-500">
@@ -92,10 +114,17 @@ export default function OraclePage() {
           <CardHeader>
             <CardTitle>Consult the Oracle</CardTitle>
             <CardDescription>
-              Describe your current feelings or situation below. Your words are safe here.
+              {isAwaitingMoreDetails
+                ? "The Oracle is listening patiently for more details."
+                : "Describe your current feelings or situation below. Your words are safe here."}
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {isAwaitingMoreDetails && (
+                <div className="mb-4 p-3 bg-secondary rounded-md text-secondary-foreground">
+                    <p className="italic">{analysis?.advice}</p>
+                </div>
+            )}
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -106,7 +135,7 @@ export default function OraclePage() {
                       <FormLabel className="sr-only">Your thoughts</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Tell me what is on your mind..."
+                          placeholder={isAwaitingMoreDetails ? "Please tell me more..." : "Tell me what is on your mind..."}
                           className="resize-none min-h-[120px]"
                           {...field}
                         />
@@ -117,21 +146,21 @@ export default function OraclePage() {
                 />
                 <Button type="submit" className="w-full bg-primary/90 hover:bg-primary" disabled={isLoading}>
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isLoading ? "Consulting..." : "Ask for Guidance"}
+                  {isLoading ? "Consulting..." : (isAwaitingMoreDetails ? "Share More" : "Ask for Guidance")}
                 </Button>
               </form>
             </Form>
           </CardContent>
         </Card>
 
-        {isLoading && (
+        {isLoading && !analysis && (
           <div className="text-center mt-8 flex items-center justify-center text-muted-foreground">
             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
             The Oracle is contemplating...
           </div>
         )}
 
-        {analysis && (
+        {analysis && !isAwaitingMoreDetails && (
           <div className="mt-8 space-y-6 animate-in fade-in-50 duration-500">
             {analysis.crisisDetected && (
               <Alert variant="destructive" className="rounded-xl">
@@ -170,18 +199,31 @@ export default function OraclePage() {
               </CardContent>
             </Card>
 
-            <Card className="rounded-xl">
-              <CardHeader className="flex flex-row items-center gap-4">
-                <BookOpen className="w-8 h-8 text-primary" />
-                <div>
-                    <CardTitle>Helpful Resources</CardTitle>
-                    <CardDescription>Tools for your journey forward.</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="whitespace-pre-wrap leading-relaxed">{analysis.resources}</p>
-              </CardContent>
-            </Card>
+            {analysis.resources && (
+              <div className="text-center pt-2">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">
+                      <BookOpen className="mr-2" />
+                      View Helpful Resources
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>Helpful Resources</DialogTitle>
+                      {analysis.resourceTips && (
+                        <DialogDescription>
+                            {analysis.resourceTips}
+                        </DialogDescription>
+                      )}
+                    </DialogHeader>
+                    <div className="py-4 whitespace-pre-wrap leading-relaxed text-sm text-muted-foreground">
+                        {analysis.resources}
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            )}
           </div>
         )}
       </div>
