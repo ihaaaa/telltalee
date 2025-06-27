@@ -15,40 +15,20 @@ export function OracleIcon(props: SVGProps<SVGSVGElement>) {
     >
       <g className="group">
         {/* Hood */}
-        <rect x="5" y="2" width="10" height="1" className="fill-current" />
+        <path d="M3 4H17V5H18V10H17V11H16V12H15V13H14V14H6V13H5V12H4V11H3V10H2V5H3V4Z" className="fill-current" />
         <rect x="4" y="3" width="12" height="1" className="fill-current" />
-        <rect x="3" y="4" width="14" height="1" className="fill-current" />
-        <rect x="3" y="5" width="2" height="5" className="fill-current" />
-        <rect x="15" y="5" width="2" height="5" className="fill-current" />
-        <rect x="5" y="5" width="1" height="1" className="fill-current" />
-        <rect x="14" y="5" width="1" height="1" className="fill-current" />
 
-        {/* Face shadow */}
-        <rect x="5" y="5" width="10" height="5" fill="hsl(var(--background))" />
+        {/* Face Shadow */}
+        <path d="M5 5H15V6H14V7H13V8H12V9H8V8H7V7H6V6H5V5Z" fill="black" fillOpacity="0.75" />
 
-        {/* Subtle animation: eyes appearing on hover/focus */}
-        <rect
-          x="8"
-          y="6"
-          width="1"
-          height="1"
-          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{fill: 'hsl(var(--accent))'}}
-        />
-        <rect
-          x="11"
-          y="6"
-          width="1"
-          height="1"
-          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{fill: 'hsl(var(--accent))'}}
-        />
-
-        {/* Body */}
-        <rect x="4" y="10" width="12" height="1" className="fill-current" />
-        <rect x="5" y="11" width="10" height="1" className="fill-current" />
-        <rect x="6" y="12" width="8" height="1" className="fill-current" />
-        <rect x="7" y="13" width="6" height="1" className="fill-current" />
+        {/* Eyes */}
+        <g className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <rect x="8" y="6" width="1" height="1" style={{fill: 'hsl(var(--accent))'}} />
+            <rect x="11" y="6" width="1" height="1" style={{fill: 'hsl(var(--accent))'}} />
+        </g>
+        
+        {/* Robe */}
+        <path d="M6 14H14V15H13V16H7V15H6V14Z" className="fill-current"/>
       </g>
     </svg>
   );
