@@ -140,16 +140,16 @@ export default function CombinedPage() {
               </div>
             </div>
 
-            <h1 className="text-5xl font-bold font-headline text-white drop-shadow-lg">
+            <h1 className="text-4xl font-bold font-headline text-white drop-shadow-lg">
               The Mindful Oracle Awaits
             </h1>
-            <p className="text-xl text-gray-300 mt-4 max-w-md mx-auto">
+            <p className="text-lg text-gray-300 mt-4 max-w-md mx-auto">
               Step into the cave of reflection. A quiet space to explore your thoughts and find clarity.
             </p>
 
             <Button
               size="lg"
-              className="mt-8 bg-primary/90 hover:bg-primary text-primary-foreground text-2xl px-8 py-6 rounded-none shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-primary-foreground/50"
+              className="mt-8 bg-primary/90 hover:bg-primary text-primary-foreground text-xl px-8 py-6 rounded-none shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-primary-foreground/50"
               onClick={() => setShowOracle(true)}
             >
               Enter the Cave
@@ -169,17 +169,17 @@ export default function CombinedPage() {
           <div className="w-full max-w-2xl mx-auto">
             <header className="flex flex-col items-center text-center mb-8">
               <OracleIcon className="mb-4" />
-              <h1 className="text-4xl font-bold font-headline text-foreground">
+              <h1 className="text-3xl font-bold font-headline text-foreground">
                 Mindful Oracle
               </h1>
-              <p className="text-xl text-muted-foreground mt-2">
+              <p className="text-lg text-muted-foreground mt-2">
                 Share your thoughts, and let the Oracle offer you a moment of clarity.
               </p>
             </header>
 
             <Card className="shadow-lg rounded-none border-2">
               <CardHeader>
-                <CardTitle className="text-3xl">Consult the Oracle</CardTitle>
+                <CardTitle className="text-2xl">Consult the Oracle</CardTitle>
                 <CardDescription className="text-base">
                   {isAwaitingMoreDetails
                     ? "The Oracle is listening patiently for more details."
@@ -188,7 +188,7 @@ export default function CombinedPage() {
               </CardHeader>
               <CardContent>
                 {isAwaitingMoreDetails && (
-                    <div className="mb-4 p-3 bg-secondary rounded-none text-secondary-foreground text-lg">
+                    <div className="mb-4 p-3 bg-secondary rounded-none text-secondary-foreground text-base">
                         <p className="italic">{analysis?.advice}</p>
                     </div>
                 )}
@@ -203,7 +203,7 @@ export default function CombinedPage() {
                           <FormControl>
                             <Textarea
                               placeholder={isAwaitingMoreDetails ? "Please tell me more..." : "Tell me what is on your mind..."}
-                              className="resize-none min-h-[120px] text-lg rounded-none"
+                              className="resize-none min-h-[120px] text-base rounded-none"
                               {...field}
                             />
                           </FormControl>
@@ -211,7 +211,7 @@ export default function CombinedPage() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" className="w-full bg-primary/90 hover:bg-primary rounded-none text-xl py-6" disabled={isLoading}>
+                    <Button type="submit" className="w-full bg-primary/90 hover:bg-primary rounded-none text-lg py-6" disabled={isLoading}>
                       {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       {isLoading ? "Consulting..." : (isAwaitingMoreDetails ? "Share More" : "Ask for Guidance")}
                     </Button>
@@ -221,7 +221,7 @@ export default function CombinedPage() {
             </Card>
 
             {isLoading && !analysis && (
-              <div className="text-center mt-8 flex items-center justify-center text-muted-foreground text-lg">
+              <div className="text-center mt-8 flex items-center justify-center text-muted-foreground text-base">
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 The Oracle is contemplating...
               </div>
@@ -232,7 +232,7 @@ export default function CombinedPage() {
                 {analysis.crisisDetected && (
                   <Alert variant="destructive" className="rounded-none border-2">
                     <Terminal className="h-4 w-4" />
-                    <AlertTitle className="text-xl">Important: Immediate Support Recommended</AlertTitle>
+                    <AlertTitle className="text-lg">Important: Immediate Support Recommended</AlertTitle>
                     <AlertDescription className="text-base">
                       It sounds like you are going through a very difficult time. Please know that help is available.
                       Consider reaching out to a crisis hotline or a mental health professional. You are not alone.
@@ -244,12 +244,12 @@ export default function CombinedPage() {
                   <CardHeader className="flex flex-row items-center gap-4">
                     <HeartPulse className="w-8 h-8 text-primary" />
                     <div>
-                        <CardTitle className="text-2xl">Sentiment Analysis</CardTitle>
+                        <CardTitle className="text-xl">Sentiment Analysis</CardTitle>
                         <CardDescription className="text-base">How your words feel to the Oracle.</CardDescription>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-2xl font-semibold" style={{color: "hsl(var(--accent-foreground))"}}>{analysis.sentimentAnalysis}</p>
+                    <p className="text-xl font-semibold" style={{color: "hsl(var(--accent-foreground))"}}>{analysis.sentimentAnalysis}</p>
                   </CardContent>
                 </Card>
 
@@ -257,12 +257,12 @@ export default function CombinedPage() {
                   <CardHeader className="flex flex-row items-center gap-4">
                     <MessageSquareQuote className="w-8 h-8 text-primary" />
                     <div>
-                        <CardTitle className="text-2xl">The Oracle's Advice</CardTitle>
+                        <CardTitle className="text-xl">The Oracle's Advice</CardTitle>
                         <CardDescription className="text-base">Wisdom tailored for you.</CardDescription>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="leading-relaxed text-lg">{analysis.advice}</p>
+                    <p className="leading-relaxed text-base">{analysis.advice}</p>
                   </CardContent>
                 </Card>
 
@@ -270,14 +270,14 @@ export default function CombinedPage() {
                   <div className="text-center pt-2">
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="outline" className="rounded-none text-lg py-5 px-6">
+                        <Button variant="outline" className="rounded-none text-base py-5 px-6">
                           <BookOpen className="mr-2" />
                           View Helpful Resources
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-md rounded-none border-2">
                         <DialogHeader>
-                          <DialogTitle className="text-2xl">Helpful Resources</DialogTitle>
+                          <DialogTitle className="text-xl">Helpful Resources</DialogTitle>
                           {analysis.resourceTips && (
                             <DialogDescription className="text-base pt-1">
                                 {analysis.resourceTips}

@@ -11,7 +11,7 @@ export function PixelTextBubble({ className, children, ...props }: HTMLAttribute
       )}
       {...props}
     >
-      <p className="text-center text-lg leading-tight">{children}</p>
+      <p className="text-center text-base leading-tight">{children}</p>
     </div>
   );
 }
