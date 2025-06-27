@@ -28,7 +28,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.8rem;
+    --radius: 0rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -84,21 +84,6 @@
 
   .dark body {
     background-color: hsl(var(--background));
-    background-image: 
-        /* Faint purple nebula for "mystic" feel */
-        radial-gradient(ellipse at 70% 30%, hsl(var(--accent) / 0.1), transparent 60%),
-        radial-gradient(ellipse at 30% 80%, hsl(var(--primary) / 0.1), transparent 60%),
-
-        /* Pixel stars layers */
-        radial-gradient(1px 1px at 50% 50%, hsl(var(--foreground) / 0.9), transparent),
-        radial-gradient(1px 1px at 50% 50%, hsl(var(--foreground) / 0.6), transparent),
-        radial-gradient(2px 2px at 50% 50%, hsl(var(--foreground) / 0.9), transparent);
-    
-    background-repeat: no-repeat, no-repeat, repeat, repeat, repeat;
-    
-    background-size: 100% 100%, 100% 100%, 80px 80px, 120px 120px, 200px 200px;
-    background-position: 0% 0%, 0% 0%, 10px 10px, 55px 55px, 150px 150px;
-
     background-attachment: fixed;
   }
 }

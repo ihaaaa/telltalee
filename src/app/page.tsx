@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,7 +8,6 @@ import { z } from "zod";
 
 import { Button } from '@/components/ui/button';
 import { OracleIcon } from '@/components/oracle-icon';
-import { CaveEntranceIcon } from '@/components/cave-entrance-icon';
 import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
@@ -32,7 +32,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { getAnalysis } from "./actions";
+import { getAnalysis, getCaveImage } from "./actions";
 import type { AnalyzeUserInputOutput } from "@/ai/flows/analyze-user-input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { BookOpen, HeartPulse, Loader2, MessageSquareQuote, Terminal } from "lucide-react";
@@ -57,18 +57,42 @@ const messages = [
 export default function CombinedPage() {
   const [showOracle, setShowOracle] = useState(false);
   const [bubbleText, setBubbleText] = useState(messages[0]);
+  const [caveImageUrl, setCaveImageUrl] = useState<string | null>(null);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
-  // State and logic from the original oracle page
   const [analysis, setAnalysis] = useState<AnalyzeUserInputOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [userMessages, setUserMessages] = useState<string[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
-    // Set a random message once on component mount (client-side)
-    // to avoid a hydration mismatch.
     setBubbleText(messages[Math.floor(Math.random() * messages.length)]);
-  }, []);
+    
+    const fetchCaveImage = async () => {
+        setIsImageLoading(true);
+        try {
+            const result = await getCaveImage();
+            if (result.data) {
+                setCaveImageUrl(result.data.imageUrl);
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "Vision Unclear",
+                    description: result.error || "The Oracle could not conjure a vision of the cave. Please try refreshing.",
+                });
+            }
+        } catch (e) {
+             toast({
+                variant: "destructive",
+                title: "Vision Unclear",
+                description: "The Oracle could not conjure a vision of the cave. Please try refreshing.",
+            });
+        } finally {
+            setIsImageLoading(false);
+        }
+    };
+    fetchCaveImage();
+  }, [toast]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,7 +103,6 @@ export default function CombinedPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-
     const newMessages = [...userMessages, values.userInput];
     setUserMessages(newMessages);
     const combinedInput = newMessages.join('\n\n');
@@ -87,11 +110,7 @@ export default function CombinedPage() {
     try {
       const result = await getAnalysis({ userInput: combinedInput });
       if (result.error) {
-        toast({
-          variant: "destructive",
-          title: "An Error Occurred",
-          description: result.error,
-        });
+        toast({ variant: "destructive", title: "An Error Occurred", description: result.error });
         setAnalysis(null);
         setUserMessages([]);
       } else {
@@ -102,11 +121,7 @@ export default function CombinedPage() {
         }
       }
     } catch (e) {
-      toast({
-        variant: "destructive",
-        title: "An Unexpected Error Occurred",
-        description: "Something went wrong on our end. Please try again.",
-      });
+      toast({ variant: "destructive", title: "An Unexpected Error Occurred", description: "Something went wrong. Please try again." });
       setAnalysis(null);
       setUserMessages([]);
     } finally {
@@ -121,20 +136,23 @@ export default function CombinedPage() {
     <div className="relative min-h-screen">
       {/* Landing Page View */}
       <div
-        className={cn(
-          "absolute inset-0 transition-opacity duration-1000 ease-in-out z-10",
-          showOracle ? "opacity-0 pointer-events-none" : "opacity-100"
-        )}
+        className={cn( "absolute inset-0 transition-opacity duration-1000 ease-in-out z-10", showOracle ? "opacity-0 pointer-events-none" : "opacity-100" )}
       >
-        <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 relative overflow-hidden">
+        <main
+          className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 relative overflow-hidden bg-background"
+          style={caveImageUrl ? { backgroundImage: `url(${caveImageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
+        >
+          {isImageLoading && (
+            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-30">
+              <Loader2 className="h-10 w-10 animate-spin text-primary" />
+              <p className="mt-4 text-foreground font-bold text-xl drop-shadow-md">The Oracle is conjuring a vision...</p>
+            </div>
+          )}
           <div className="relative z-10 flex flex-col items-center text-center text-white">
             <div className="relative w-64 h-64 mb-4 group">
                <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-56 z-20 animate-in fade-in delay-500 duration-1000">
-                  <PixelTextBubble>
-                      {bubbleText}
-                  </PixelTextBubble>
+                  <PixelTextBubble>{bubbleText}</PixelTextBubble>
               </div>
-              <CaveEntranceIcon className="absolute inset-0 w-full h-full text-foreground/5" />
               <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
                 <OracleIcon className="w-24 h-24" />
               </div>
@@ -143,14 +161,15 @@ export default function CombinedPage() {
             <h1 className="text-4xl font-bold font-headline text-white drop-shadow-lg">
               The Mindful Oracle Awaits
             </h1>
-            <p className="text-lg text-gray-300 mt-4 max-w-md mx-auto">
-              Step into the cave of reflection. A quiet space to explore your thoughts and find clarity.
+            <p className="text-lg text-gray-300 mt-4 max-w-md mx-auto drop-shadow-md">
+              A quiet space to explore your thoughts and find clarity, deep within the crystal cave.
             </p>
 
             <Button
               size="lg"
               className="mt-8 bg-primary/90 hover:bg-primary text-primary-foreground text-xl px-8 py-6 rounded-none shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-primary-foreground/50"
               onClick={() => setShowOracle(true)}
+              disabled={isImageLoading}
             >
               Enter the Cave
             </Button>
@@ -160,10 +179,7 @@ export default function CombinedPage() {
       
       {/* Oracle Page View */}
       <div
-        className={cn(
-          "absolute inset-0 transition-opacity duration-1000 ease-in-out",
-          showOracle ? "opacity-100 z-20" : "opacity-0 pointer-events-none"
-        )}
+        className={cn( "absolute inset-0 transition-opacity duration-1000 ease-in-out", showOracle ? "opacity-100 z-20" : "opacity-0 pointer-events-none" )}
       >
         <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8">
           <div className="w-full max-w-2xl mx-auto">
@@ -181,9 +197,7 @@ export default function CombinedPage() {
               <CardHeader>
                 <CardTitle className="text-2xl">Consult the Oracle</CardTitle>
                 <CardDescription className="text-base">
-                  {isAwaitingMoreDetails
-                    ? "The Oracle is listening patiently for more details."
-                    : "Describe your current feelings or situation below. Your words are safe here."}
+                  {isAwaitingMoreDetails ? "The Oracle is listening patiently." : "Describe your current feelings. Your words are safe here."}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -234,8 +248,7 @@ export default function CombinedPage() {
                     <Terminal className="h-4 w-4" />
                     <AlertTitle className="text-lg">Important: Immediate Support Recommended</AlertTitle>
                     <AlertDescription className="text-base">
-                      It sounds like you are going through a very difficult time. Please know that help is available.
-                      Consider reaching out to a crisis hotline or a mental health professional. You are not alone.
+                      It sounds like you are going through a very difficult time. Please know that help is available. Consider reaching out to a crisis hotline or a mental health professional.
                     </AlertDescription>
                   </Alert>
                 )}
