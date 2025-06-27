@@ -126,7 +126,7 @@ export default function CombinedPage() {
               <div className="relative w-64 h-64 mb-4 group">
                 <CaveEntranceIcon className="absolute inset-0 w-full h-full text-foreground/5" />
                 <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
-                  <OracleIcon className="w-24 h-24 text-primary" />
+                  <OracleIcon className="w-24 h-24" />
                 </div>
               </div>
 
