@@ -4,8 +4,8 @@ import {Toaster} from '@/components/ui/toaster';
 import {cn} from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Mindful Oracle',
-  description: 'Your personal AI guide to mental clarity and well-being.',
+  title: 'TELL-TALE',
+  description: 'Unburden your thoughts, unveil your story.',
 };
 
 export default function RootLayout({

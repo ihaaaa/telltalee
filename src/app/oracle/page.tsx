@@ -40,7 +40,7 @@ import { useToast } from "@/hooks/use-toast";
 const formSchema = z.object({
   userInput: z.string()
     .min(1, { message: "Please share a little something." })
-    .max(1000, { message: "The oracle can only process so much at once. Please keep it under 1000 characters." }),
+    .max(1000, { message: "The confidant can only process so much at once. Please keep it under 1000 characters." }),
 });
 
 export default function OraclePage() {
@@ -103,19 +103,19 @@ export default function OraclePage() {
         <header className="flex flex-col items-center text-center mb-8">
           <OracleIcon className="mb-4" />
           <h1 className="text-4xl font-bold font-headline text-foreground">
-            Mindful Oracle
+            TELL-TALE
           </h1>
           <p className="text-muted-foreground mt-2">
-            Share your thoughts, and let the Oracle offer you a moment of clarity.
+            Share your thoughts, and see what tale they tell.
           </p>
         </header>
 
         <Card className="shadow-lg rounded-xl">
           <CardHeader>
-            <CardTitle>Consult the Oracle</CardTitle>
+            <CardTitle>Tell Your Tale</CardTitle>
             <CardDescription>
               {isAwaitingMoreDetails
-                ? "The Oracle is listening patiently for more details."
+                ? "The confidant is listening patiently for more details."
                 : "Describe your current feelings or situation below. Your words are safe here."}
             </CardDescription>
           </CardHeader>
@@ -146,7 +146,7 @@ export default function OraclePage() {
                 />
                 <Button type="submit" className="w-full bg-primary/90 hover:bg-primary" disabled={isLoading}>
                   {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isLoading ? "Consulting..." : (isAwaitingMoreDetails ? "Share More" : "Ask for Guidance")}
+                  {isLoading ? "Analyzing..." : (isAwaitingMoreDetails ? "Share More" : "Tell Your Tale")}
                 </Button>
               </form>
             </Form>
@@ -156,7 +156,7 @@ export default function OraclePage() {
         {isLoading && !analysis && (
           <div className="text-center mt-8 flex items-center justify-center text-muted-foreground">
             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-            The Oracle is contemplating...
+            Analyzing your tale...
           </div>
         )}
 
@@ -178,7 +178,7 @@ export default function OraclePage() {
                 <HeartPulse className="w-8 h-8 text-primary" />
                 <div>
                     <CardTitle>Sentiment Analysis</CardTitle>
-                    <CardDescription>How your words feel to the Oracle.</CardDescription>
+                    <CardDescription>The tone of your tale.</CardDescription>
                 </div>
               </CardHeader>
               <CardContent>
@@ -190,8 +190,8 @@ export default function OraclePage() {
               <CardHeader className="flex flex-row items-center gap-4">
                 <MessageSquareQuote className="w-8 h-8 text-primary" />
                 <div>
-                    <CardTitle>The Oracle's Advice</CardTitle>
-                    <CardDescription>Wisdom tailored for you.</CardDescription>
+                    <CardTitle>A New Perspective</CardTitle>
+                    <CardDescription>Insight tailored for you.</CardDescription>
                 </div>
               </CardHeader>
               <CardContent>

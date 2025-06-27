@@ -43,11 +43,11 @@ import { PixelTextBubble } from "@/components/pixel-text-bubble";
 const formSchema = z.object({
   userInput: z.string()
     .min(1, { message: "Please share a little something." })
-    .max(1000, { message: "The oracle can only process so much at once. Please keep it under 1000 characters." }),
+    .max(1000, { message: "The confidant can only process so much at once. Please keep it under 1000 characters." }),
 });
 
 const messages = [
-  "What weighs on your mind?",
+  "What tale does your heart tell?",
   "The stars are listening...",
   "Speak, and be heard.",
   "Your thoughts are safe here.",
@@ -79,14 +79,14 @@ export default function CombinedPage() {
                 toast({
                     variant: "destructive",
                     title: "Vision Unclear",
-                    description: result.error || "The Oracle could not conjure a vision of the cave. Please try refreshing.",
+                    description: result.error || "Could not conjure a vision of the cave. Please try refreshing.",
                 });
             }
         } catch (e) {
              toast({
                 variant: "destructive",
                 title: "Vision Unclear",
-                description: "The Oracle could not conjure a vision of the cave. Please try refreshing.",
+                description: "Could not conjure a vision of the cave. Please try refreshing.",
             });
         } finally {
             setIsImageLoading(false);
@@ -112,14 +112,14 @@ export default function CombinedPage() {
                 toast({
                     variant: "destructive",
                     title: "Vision Unclear",
-                    description: result.error || "The Oracle could not conjure a vision of the inner cave.",
+                    description: result.error || "Could not conjure a vision of the inner cave.",
                 });
             }
         }).catch(() => {
              toast({
                 variant: "destructive",
                 title: "Vision Unclear",
-                description: "The Oracle could not conjure a vision of the inner cave.",
+                description: "Could not conjure a vision of the inner cave.",
             });
         });
     }
@@ -179,7 +179,7 @@ export default function CombinedPage() {
           {isImageLoading && (
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-30">
               <Loader2 className="h-10 w-10 animate-spin text-primary" />
-              <p className="mt-4 text-foreground font-bold text-xl drop-shadow-md">The Oracle is conjuring a vision...</p>
+              <p className="mt-4 text-foreground font-bold text-xl drop-shadow-md">Conjuring a vision...</p>
             </div>
           )}
           <div className="relative z-10 flex flex-col items-center text-center text-white">
@@ -193,10 +193,10 @@ export default function CombinedPage() {
             </div>
 
             <h1 className="text-4xl font-bold font-headline text-white drop-shadow-lg">
-              The Mindful Oracle Awaits
+              TELL-TALE
             </h1>
             <p className="text-lg text-gray-300 mt-4 max-w-md mx-auto drop-shadow-md">
-              A quiet space to explore your thoughts and find clarity, deep within the crystal cave.
+              A quiet space to unburden your thoughts and unveil your story, deep within the crystal cave.
             </p>
 
             <Button
@@ -234,18 +234,18 @@ export default function CombinedPage() {
             <header className="flex flex-col items-center text-center mb-8">
               <OracleIcon className="mb-4" />
               <h1 className="text-3xl font-bold font-headline text-foreground">
-                Mindful Oracle
+                TELL-TALE
               </h1>
               <p className="text-lg text-muted-foreground mt-2">
-                Share your thoughts, and let the Oracle offer you a moment of clarity.
+                Share your thoughts, and see what tale they tell.
               </p>
             </header>
 
             <Card className="shadow-lg rounded-none border-2">
               <CardHeader>
-                <CardTitle className="text-2xl">Consult the Oracle</CardTitle>
+                <CardTitle className="text-2xl">Tell Your Tale</CardTitle>
                 <CardDescription className="text-base">
-                  {isAwaitingMoreDetails ? "The Oracle is listening patiently." : "Describe your current feelings. Your words are safe here."}
+                  {isAwaitingMoreDetails ? "The confidant is listening patiently." : "Describe your current feelings. Your words are safe here."}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -275,7 +275,7 @@ export default function CombinedPage() {
                     />
                     <Button type="submit" className="w-full bg-primary/90 hover:bg-primary rounded-none text-lg py-6" disabled={isLoading}>
                       {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                      {isLoading ? "Consulting..." : (isAwaitingMoreDetails ? "Share More" : "Ask for Guidance")}
+                      {isLoading ? "Analyzing..." : (isAwaitingMoreDetails ? "Share More" : "Share Your Tale")}
                     </Button>
                   </form>
                 </Form>
@@ -285,7 +285,7 @@ export default function CombinedPage() {
             {isLoading && !analysis && (
               <div className="text-center mt-8 flex items-center justify-center text-muted-foreground text-base">
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                The Oracle is contemplating...
+                Analyzing your tale...
               </div>
             )}
 
@@ -306,7 +306,7 @@ export default function CombinedPage() {
                     <HeartPulse className="w-8 h-8 text-primary" />
                     <div>
                         <CardTitle className="text-xl">Sentiment Analysis</CardTitle>
-                        <CardDescription className="text-base">How your words feel to the Oracle.</CardDescription>
+                        <CardDescription className="text-base">The tone of your tale.</CardDescription>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -318,8 +318,8 @@ export default function CombinedPage() {
                   <CardHeader className="flex flex-row items-center gap-4">
                     <MessageSquareQuote className="w-8 h-8 text-primary" />
                     <div>
-                        <CardTitle className="text-xl">The Oracle's Advice</CardTitle>
-                        <CardDescription className="text-base">Wisdom tailored for you.</CardDescription>
+                        <CardTitle className="text-xl">A New Perspective</CardTitle>
+                        <CardDescription className="text-base">Insight tailored for you.</CardDescription>
                     </div>
                   </CardHeader>
                   <CardContent>

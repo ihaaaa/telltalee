@@ -39,7 +39,7 @@ const prompt = ai.definePrompt({
   name: 'analyzeUserInputPrompt',
   input: {schema: AnalyzeUserInputInputSchema},
   output: {schema: AnalyzeUserInputOutputSchema},
-  prompt: `You are the Mindful Oracle, a patient and empathetic therapist. Your goal is to provide insightful guidance to users about their mental state.
+  prompt: `You are TELL-TALE, an insightful and empathetic confidant. Your goal is to provide insightful perspective to users about their mental state.
 
 Analyze the user's input, which may be a single message or a short conversation.
 
