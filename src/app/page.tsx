@@ -38,6 +38,7 @@ import { BookOpen, HeartPulse, Loader2, MessageSquareQuote, Terminal } from "luc
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { PixelTextBubble } from "@/components/pixel-text-bubble";
+import { OracleIcon } from "@/components/oracle-icon";
 
 const formSchema = z.object({
   userInput: z.string()
@@ -228,7 +229,8 @@ export default function CombinedPage() {
         <main className="relative z-10 flex flex-col items-center h-screen overflow-y-auto px-4 sm:px-8">
           <div className="w-full max-w-2xl mx-auto py-12">
             <header className="flex flex-col items-center text-center mb-8">
-              <h1 className="text-3xl font-bold font-headline text-foreground mt-8">
+              <OracleIcon className="w-24 h-24 mb-4" />
+              <h1 className="text-3xl font-bold font-headline text-foreground">
                 TELL-TALE
               </h1>
               <p className="text-lg text-muted-foreground mt-2">
