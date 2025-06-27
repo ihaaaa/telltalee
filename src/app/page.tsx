@@ -140,10 +140,9 @@ export default function CombinedPage() {
       >
         <Image
             src="https://placehold.co/1200x800.png"
-            layout="fill"
-            objectFit="cover"
+            fill
             alt="A mysterious cave entrance at night with a large moon in the sky."
-            className="z-0"
+            className="z-0 object-cover"
             data-ai-hint="cave entrance night"
         />
         <div className="absolute inset-0 bg-black/60 z-10" />
