@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -139,8 +138,7 @@ export default function CombinedPage() {
         className={cn( "absolute inset-0 transition-opacity duration-1000 ease-in-out z-10", showOracle ? "opacity-0 pointer-events-none" : "opacity-100" )}
       >
         <main
-          className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 relative overflow-hidden bg-background"
-          style={caveImageUrl ? { backgroundImage: `url(${caveImageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
+          className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 relative overflow-hidden"
         >
           {isImageLoading && (
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-30">
@@ -180,8 +178,10 @@ export default function CombinedPage() {
       {/* Oracle Page View */}
       <div
         className={cn( "absolute inset-0 transition-opacity duration-1000 ease-in-out", showOracle ? "opacity-100 z-20" : "opacity-0 pointer-events-none" )}
+        style={caveImageUrl ? { backgroundImage: `url(${caveImageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
       >
-        <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8">
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-0" />
+        <main className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8">
           <div className="w-full max-w-2xl mx-auto">
             <header className="flex flex-col items-center text-center mb-8">
               <OracleIcon className="mb-4" />
