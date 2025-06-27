@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -135,10 +136,19 @@ export default function CombinedPage() {
     <div className="relative min-h-screen">
       {/* Landing Page View */}
       <div
-        className={cn( "absolute inset-0 transition-opacity duration-1000 ease-in-out z-10", showOracle ? "opacity-0 pointer-events-none" : "opacity-100" )}
+        className={cn( "absolute inset-0 transition-opacity duration-1000 ease-in-out", showOracle ? "opacity-0 pointer-events-none" : "opacity-100" )}
       >
+        <Image
+            src="https://placehold.co/1200x800.png"
+            layout="fill"
+            objectFit="cover"
+            alt="A mysterious cave entrance at night with a large moon in the sky."
+            className="z-0"
+            data-ai-hint="cave entrance night"
+        />
+        <div className="absolute inset-0 bg-black/60 z-10" />
         <main
-          className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 relative overflow-hidden"
+          className="relative z-20 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8"
         >
           {isImageLoading && (
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-30">
