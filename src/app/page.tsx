@@ -139,13 +139,14 @@ export default function CombinedPage() {
         className={cn( "absolute inset-0 transition-opacity duration-1000 ease-in-out", showOracle ? "opacity-0 pointer-events-none" : "opacity-100" )}
       >
         <div className="absolute inset-0 -z-10">
-            <Image
-                src="https://placehold.co/1200x800.png"
-                fill
-                alt="A mysterious cave entrance at night with a large moon in the sky."
-                className="object-cover"
-                data-ai-hint="cave entrance night"
-            />
+            {caveImageUrl && (
+                <Image
+                    src={caveImageUrl}
+                    fill
+                    alt="A mystical cave with glowing crystals."
+                    className="object-cover"
+                />
+            )}
             <div className="absolute inset-0 bg-black/60" />
         </div>
         <main
@@ -189,7 +190,6 @@ export default function CombinedPage() {
       {/* Oracle Page View */}
       <div
         className={cn( "absolute inset-0 transition-opacity duration-1000 ease-in-out", showOracle ? "opacity-100 z-20" : "opacity-0 pointer-events-none" )}
-        style={caveImageUrl ? { backgroundImage: `url(${caveImageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
       >
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-0" />
         <main className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8">
