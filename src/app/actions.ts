@@ -39,7 +39,7 @@ type ImageResult = {
 export async function getCaveImage(): Promise<ImageResult> {
     try {
         const result = await generateImage({
-            prompt: "A beautiful pixel art illustration of a mystical cave. The cave walls are dark rock with orange and purple highlights. The path is made of stone tiles, leading towards the opening. Bright, glowing cyan crystals line the sides of the path. In the distance, through the cave opening, a mountain silhouetted against a starry night sky is visible. The overall mood is magical and serene."
+            prompt: "A beautiful pixel art illustration of a mystical cave, viewed from the inside looking out. The cave's rocky, dark blue silhouette frames the scene at the top and sides. The ground is a desolate, rocky terrain. The opening of the cave reveals a breathtaking, deep blue night sky filled with a dense field of brilliant white stars and a glowing central galaxy or nebula. The atmosphere is serene, magical, and vast."
         });
         return { data: result };
     } catch (e) {
