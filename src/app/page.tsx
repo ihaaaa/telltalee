@@ -183,6 +183,7 @@ export default function CombinedPage() {
             </div>
           )}
           <div className="relative z-10 flex flex-col items-center text-center text-white">
+             <OracleIcon className="w-32 h-32 mb-4" />
             <div className="mb-8 animate-in fade-in delay-500 duration-1000">
                 <div className="w-56">
                     <PixelTextBubble>{bubbleText}</PixelTextBubble>
