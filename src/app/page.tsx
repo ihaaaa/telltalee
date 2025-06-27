@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -39,6 +39,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { BookOpen, HeartPulse, Loader2, MessageSquareQuote, Terminal } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { PixelTextBubble } from "@/components/pixel-text-bubble";
 
 const formSchema = z.object({
   userInput: z.string()
@@ -46,14 +47,37 @@ const formSchema = z.object({
     .max(1000, { message: "The oracle can only process so much at once. Please keep it under 1000 characters." }),
 });
 
+const messages = [
+  "What weighs on your mind?",
+  "The stars are listening...",
+  "Speak, and be heard.",
+  "Your thoughts are safe here.",
+  "The cosmos awaits your words."
+];
+
 export default function CombinedPage() {
   const [showOracle, setShowOracle] = useState(false);
+  const [bubbleText, setBubbleText] = useState(messages[0]);
 
   // State and logic from the original oracle page
   const [analysis, setAnalysis] = useState<AnalyzeUserInputOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [userMessages, setUserMessages] = useState<string[]>([]);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!showOracle) {
+      const intervalId = setInterval(() => {
+        setBubbleText(prevText => {
+          const currentIndex = messages.indexOf(prevText);
+          const nextIndex = (currentIndex + 1) % messages.length;
+          return messages[nextIndex];
+        });
+      }, 4000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [showOracle]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -114,6 +138,11 @@ export default function CombinedPage() {
         <main className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 relative overflow-hidden">
           <div className="relative z-10 flex flex-col items-center text-center text-white">
             <div className="relative w-64 h-64 mb-4 group">
+               <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-56 z-20 animate-in fade-in delay-500 duration-1000">
+                  <PixelTextBubble>
+                      {bubbleText}
+                  </PixelTextBubble>
+              </div>
               <CaveEntranceIcon className="absolute inset-0 w-full h-full text-foreground/5" />
               <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
                 <OracleIcon className="w-24 h-24" />
@@ -123,13 +152,13 @@ export default function CombinedPage() {
             <h1 className="text-5xl font-bold font-headline text-white drop-shadow-lg">
               The Mindful Oracle Awaits
             </h1>
-            <p className="text-gray-300 mt-4 max-w-md mx-auto">
+            <p className="text-xl text-gray-300 mt-4 max-w-md mx-auto">
               Step into the cave of reflection. A quiet space to explore your thoughts and find clarity.
             </p>
 
             <Button
               size="lg"
-              className="mt-8 bg-primary/90 hover:bg-primary text-primary-foreground text-lg px-8 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+              className="mt-8 bg-primary/90 hover:bg-primary text-primary-foreground text-2xl px-8 py-6 rounded-none shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-primary-foreground/50"
               onClick={() => setShowOracle(true)}
             >
               Enter the Cave
@@ -152,15 +181,15 @@ export default function CombinedPage() {
               <h1 className="text-4xl font-bold font-headline text-foreground">
                 Mindful Oracle
               </h1>
-              <p className="text-muted-foreground mt-2">
+              <p className="text-xl text-muted-foreground mt-2">
                 Share your thoughts, and let the Oracle offer you a moment of clarity.
               </p>
             </header>
 
-            <Card className="shadow-lg rounded-xl">
+            <Card className="shadow-lg rounded-none border-2">
               <CardHeader>
-                <CardTitle>Consult the Oracle</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-3xl">Consult the Oracle</CardTitle>
+                <CardDescription className="text-base">
                   {isAwaitingMoreDetails
                     ? "The Oracle is listening patiently for more details."
                     : "Describe your current feelings or situation below. Your words are safe here."}
@@ -168,7 +197,7 @@ export default function CombinedPage() {
               </CardHeader>
               <CardContent>
                 {isAwaitingMoreDetails && (
-                    <div className="mb-4 p-3 bg-secondary rounded-md text-secondary-foreground">
+                    <div className="mb-4 p-3 bg-secondary rounded-none text-secondary-foreground text-lg">
                         <p className="italic">{analysis?.advice}</p>
                     </div>
                 )}
@@ -183,7 +212,7 @@ export default function CombinedPage() {
                           <FormControl>
                             <Textarea
                               placeholder={isAwaitingMoreDetails ? "Please tell me more..." : "Tell me what is on your mind..."}
-                              className="resize-none min-h-[120px]"
+                              className="resize-none min-h-[120px] text-lg rounded-none"
                               {...field}
                             />
                           </FormControl>
@@ -191,7 +220,7 @@ export default function CombinedPage() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" className="w-full bg-primary/90 hover:bg-primary" disabled={isLoading}>
+                    <Button type="submit" className="w-full bg-primary/90 hover:bg-primary rounded-none text-xl py-6" disabled={isLoading}>
                       {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       {isLoading ? "Consulting..." : (isAwaitingMoreDetails ? "Share More" : "Ask for Guidance")}
                     </Button>
@@ -201,7 +230,7 @@ export default function CombinedPage() {
             </Card>
 
             {isLoading && !analysis && (
-              <div className="text-center mt-8 flex items-center justify-center text-muted-foreground">
+              <div className="text-center mt-8 flex items-center justify-center text-muted-foreground text-lg">
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 The Oracle is contemplating...
               </div>
@@ -210,39 +239,39 @@ export default function CombinedPage() {
             {analysis && !isAwaitingMoreDetails && (
               <div className="mt-8 space-y-6 animate-in fade-in-50 duration-500">
                 {analysis.crisisDetected && (
-                  <Alert variant="destructive" className="rounded-xl">
+                  <Alert variant="destructive" className="rounded-none border-2">
                     <Terminal className="h-4 w-4" />
-                    <AlertTitle>Important: Immediate Support Recommended</AlertTitle>
-                    <AlertDescription>
+                    <AlertTitle className="text-xl">Important: Immediate Support Recommended</AlertTitle>
+                    <AlertDescription className="text-base">
                       It sounds like you are going through a very difficult time. Please know that help is available.
                       Consider reaching out to a crisis hotline or a mental health professional. You are not alone.
                     </AlertDescription>
                   </Alert>
                 )}
 
-                <Card className="rounded-xl">
+                <Card className="rounded-none border-2">
                   <CardHeader className="flex flex-row items-center gap-4">
                     <HeartPulse className="w-8 h-8 text-primary" />
                     <div>
-                        <CardTitle>Sentiment Analysis</CardTitle>
-                        <CardDescription>How your words feel to the Oracle.</CardDescription>
+                        <CardTitle className="text-2xl">Sentiment Analysis</CardTitle>
+                        <CardDescription className="text-base">How your words feel to the Oracle.</CardDescription>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-lg font-semibold" style={{color: "hsl(var(--accent-foreground))"}}>{analysis.sentimentAnalysis}</p>
+                    <p className="text-2xl font-semibold" style={{color: "hsl(var(--accent-foreground))"}}>{analysis.sentimentAnalysis}</p>
                   </CardContent>
                 </Card>
 
-                <Card className="rounded-xl">
+                <Card className="rounded-none border-2">
                   <CardHeader className="flex flex-row items-center gap-4">
                     <MessageSquareQuote className="w-8 h-8 text-primary" />
                     <div>
-                        <CardTitle>The Oracle's Advice</CardTitle>
-                        <CardDescription>Wisdom tailored for you.</CardDescription>
+                        <CardTitle className="text-2xl">The Oracle's Advice</CardTitle>
+                        <CardDescription className="text-base">Wisdom tailored for you.</CardDescription>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="leading-relaxed">{analysis.advice}</p>
+                    <p className="leading-relaxed text-lg">{analysis.advice}</p>
                   </CardContent>
                 </Card>
 
@@ -250,21 +279,21 @@ export default function CombinedPage() {
                   <div className="text-center pt-2">
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="outline">
+                        <Button variant="outline" className="rounded-none text-lg py-5 px-6">
                           <BookOpen className="mr-2" />
                           View Helpful Resources
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="sm:max-w-md">
+                      <DialogContent className="sm:max-w-md rounded-none border-2">
                         <DialogHeader>
-                          <DialogTitle>Helpful Resources</DialogTitle>
+                          <DialogTitle className="text-2xl">Helpful Resources</DialogTitle>
                           {analysis.resourceTips && (
-                            <DialogDescription>
+                            <DialogDescription className="text-base pt-1">
                                 {analysis.resourceTips}
                             </DialogDescription>
                           )}
                         </DialogHeader>
-                        <div className="py-4 whitespace-pre-wrap leading-relaxed text-sm text-muted-foreground">
+                        <div className="py-4 whitespace-pre-wrap leading-relaxed text-base text-muted-foreground">
                             {analysis.resources}
                         </div>
                       </DialogContent>
