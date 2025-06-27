@@ -138,16 +138,18 @@ export default function CombinedPage() {
       <div
         className={cn( "absolute inset-0 transition-opacity duration-1000 ease-in-out", showOracle ? "opacity-0 pointer-events-none" : "opacity-100" )}
       >
-        <Image
-            src="https://placehold.co/1200x800.png"
-            fill
-            alt="A mysterious cave entrance at night with a large moon in the sky."
-            className="z-0 object-cover"
-            data-ai-hint="cave entrance night"
-        />
-        <div className="absolute inset-0 bg-black/60 z-10" />
+        <div className="absolute inset-0 -z-10">
+            <Image
+                src="https://placehold.co/1200x800.png"
+                fill
+                alt="A mysterious cave entrance at night with a large moon in the sky."
+                className="object-cover"
+                data-ai-hint="cave entrance night"
+            />
+            <div className="absolute inset-0 bg-black/60" />
+        </div>
         <main
-          className="relative z-20 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8"
+          className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8"
         >
           {isImageLoading && (
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-30">
