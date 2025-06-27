@@ -32,7 +32,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { getAnalysis, getCaveImage } from "./actions";
+import { getAnalysis, getCaveImage, getOracleCaveImage } from "./actions";
 import type { AnalyzeUserInputOutput } from "@/ai/flows/analyze-user-input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { BookOpen, HeartPulse, Loader2, MessageSquareQuote, Terminal } from "lucide-react";
@@ -59,6 +59,7 @@ export default function CombinedPage() {
   const [bubbleText, setBubbleText] = useState(messages[0]);
   const [caveImageUrl, setCaveImageUrl] = useState<string | null>(null);
   const [isImageLoading, setIsImageLoading] = useState(true);
+  const [oracleCaveImageUrl, setOracleCaveImageUrl] = useState<string | null>(null);
 
   const [analysis, setAnalysis] = useState<AnalyzeUserInputOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -100,6 +101,29 @@ export default function CombinedPage() {
       userInput: "",
     },
   });
+
+  const handleEnterCave = () => {
+    setShowOracle(true);
+    if (!oracleCaveImageUrl) { // Prevent re-fetching
+        getOracleCaveImage().then(result => {
+            if (result.data) {
+                setOracleCaveImageUrl(result.data.imageUrl);
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "Vision Unclear",
+                    description: result.error || "The Oracle could not conjure a vision of the inner cave.",
+                });
+            }
+        }).catch(() => {
+             toast({
+                variant: "destructive",
+                title: "Vision Unclear",
+                description: "The Oracle could not conjure a vision of the inner cave.",
+            });
+        });
+    }
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
@@ -143,7 +167,7 @@ export default function CombinedPage() {
                 <Image
                     src={caveImageUrl}
                     fill
-                    alt="A mystical cave with glowing crystals."
+                    alt="A mystical cave with a view of a starry night sky."
                     className="object-cover"
                 />
             )}
@@ -178,7 +202,7 @@ export default function CombinedPage() {
             <Button
               size="lg"
               className="mt-8 bg-primary/90 hover:bg-primary text-primary-foreground text-xl px-8 py-6 rounded-none shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-primary-foreground/50"
-              onClick={() => setShowOracle(true)}
+              onClick={handleEnterCave}
               disabled={isImageLoading}
             >
               Enter the Cave
@@ -191,7 +215,20 @@ export default function CombinedPage() {
       <div
         className={cn( "absolute inset-0 transition-opacity duration-1000 ease-in-out", showOracle ? "opacity-100 z-20" : "opacity-0 pointer-events-none" )}
       >
-        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-0" />
+        <div className="absolute inset-0 z-0">
+          {oracleCaveImageUrl && (
+              <Image
+                  src={oracleCaveImageUrl}
+                  fill
+                  alt="A mystical cave with glowing pink and blue crystals."
+                  className="object-cover animate-in fade-in duration-1000"
+              />
+          )}
+          <div className="absolute inset-0 bg-black/60" />
+          {!oracleCaveImageUrl && (
+              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+          )}
+        </div>
         <main className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 sm:p-8">
           <div className="w-full max-w-2xl mx-auto">
             <header className="flex flex-col items-center text-center mb-8">

@@ -47,3 +47,15 @@ export async function getCaveImage(): Promise<ImageResult> {
         return { error: 'Could not generate cave image.' };
     }
 }
+
+export async function getOracleCaveImage(): Promise<ImageResult> {
+    try {
+        const result = await generateImage({
+            prompt: "A beautiful pixel art illustration of a magical cave interior. The scene is lit by large, glowing crystals. On the left and right, large pink crystals emanate a soft magenta light. In the center and background, glowing blue crystals and formations provide a cool contrast. The floor is made of cracked stone tiles. The atmosphere is mystical, serene, and enchanting."
+        });
+        return { data: result };
+    } catch (e) {
+        console.error('Error calling oracle cave image generation flow:', e);
+        return { error: 'Could not generate oracle cave image.' };
+    }
+}
