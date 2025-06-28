@@ -38,6 +38,9 @@ https://telltale1.netlify.app
 📜 License
 MIT License.
 
+Prototype Screenshots
+
+
 
 ## 📦 How to Run Locally
 
@@ -46,4 +49,6 @@ git clone https://github.com/ihaaa/telltalee.git
 cd tell-tale
 npm install
 npm run dev
+
+
 
