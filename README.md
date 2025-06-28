@@ -38,9 +38,6 @@ https://telltale1.netlify.app
 📜 License
 MIT License.
 
-Prototype Screenshots
-
-
 
 ## 📦 How to Run Locally
 
